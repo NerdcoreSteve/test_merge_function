@@ -2,28 +2,24 @@
 //TODO lint code?
 //TODO Use test framework in test_merge?
 
-var test_merge = require('./test_merge.js')
+"use strict"
 
-console.log(
-    test_merge(function (map1, map2) {
-        function array_of_pairs(object) {
-            return Object.keys(object)
-                .map(function (key) {
-                    return {key: key, value: object[key]}
-                })
-        }
+let test_merge = require('./test_merge.js')
 
-        function object(pairs) {
-            var object = {}
-            pairs.forEach(function (pair) {
-                if(typeof object[pair.key] === 'undefined') {
-                    object[pair.key] = pair.value
-                } else if(object[pair.key] < pair.value) {
-                    object[pair.key] = pair.value
+let object_to_kv_pairs = (object) => Object.keys(object).map((key) => ({key: key, value: object[key]}))
+
+let merge = (map1, map2) => {
+    let merge_kv_pairs_to_object = (kv_pairs) =>
+        kv_pairs.reduce(
+            (object, kv_pair) => {
+                if(typeof object[kv_pair.key] === 'undefined' || object[kv_pair.key] < kv_pair.value) {
+                    object[kv_pair.key] = kv_pair.value
                 }
-            })
-            return object
-        }
+                return object
+            },
+            {})
 
-        return object(array_of_pairs(map1).concat(array_of_pairs(map2)))
-    }))
+    return merge_kv_pairs_to_object(object_to_kv_pairs(map1).concat(object_to_kv_pairs(map2)))
+}
+
+console.log(test_merge(merge))
