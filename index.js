@@ -11,7 +11,8 @@ let object_to_kv_pairs = (object) => Object.keys(object).map((key) => ({key: key
 let kv_pairs_to_object = (kv_pairs, replace_duplicate_key_condition) =>
     kv_pairs.reduce(
         (object, kv_pair) => {
-            if(replace_duplicate_key_condition(object, kv_pair)) {
+            if(typeof object[kv_pair.key] === 'undefined'
+                || replace_duplicate_key_condition(object, kv_pair)) {
                 object[kv_pair.key] = kv_pair.value
             }
             return object
@@ -21,7 +22,6 @@ let kv_pairs_to_object = (kv_pairs, replace_duplicate_key_condition) =>
 let merge = (map1, map2) =>
     kv_pairs_to_object(
         object_to_kv_pairs(map1).concat(object_to_kv_pairs(map2)),
-        (object, kv_pair) =>
-            typeof object[kv_pair.key] === 'undefined' || object[kv_pair.key] < kv_pair.value)
+        (object, kv_pair) => object[kv_pair.key] < kv_pair.value)
 
 console.log(test_merge(merge))
