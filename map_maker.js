@@ -33,5 +33,5 @@ function random_map_of_letter_keys_number_values(
 
 module.exports = {
     random_map_of_letter_keys_number_values: random_map_of_letter_keys_number_values,
-    make_me_a_map: _.partial(random_map_of_letter_keys_number_values, 10, 'a', 'z', 1, 3)
+    make_me_a_map: _.partial(random_map_of_letter_keys_number_values, 10, 'a', 'z', -2, 3)
 }
